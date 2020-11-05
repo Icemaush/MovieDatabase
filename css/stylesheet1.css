@@ -1,0 +1,35 @@
+body {
+	padding-top: 70px;
+}
+
+p {
+	font-size: 16px;
+	color: white;
+}
+
+.btn:hover {
+	background-color: #dc3545;
+	color: white;
+	transition: 0.3s;
+}
+
+.card-deck {
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+h1 {
+	color: white;
+}
+
+h3 {
+	color: white;
+}
+
+h4 {
+	color: white;
+}
+
+label {
+    color: white;
+}

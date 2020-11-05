@@ -1,0 +1,37 @@
+/*
+Name: Reece Pieri
+ID: M087496
+Date: 24/09/2020
+Activity: Project
+
+The SMT Movie Rental needs a system for its clients to search movies online.  You are required to develop an online movie search application. 
+*/
+
+#pagetitle {
+    font-family: Syncopate;
+    font-size: 4rem;
+    color: orange;
+}
+
+#star1 {
+    font-size: 1rem;
+    color: white;
+    animation: flashing 3s infinite;
+}
+
+#star2 {
+    font-size: 2rem;
+    color: white;
+    animation: flashing 3s 1s infinite;
+}
+
+#star3 {
+    font-size: 3rem;
+    color: white;
+    animation: flashing 3s 2s infinite;
+}
+
+@keyframes flashing {
+    0% {color: white;}
+    50% {color: yellow;}
+}

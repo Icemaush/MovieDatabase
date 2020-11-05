@@ -1,0 +1,51 @@
+/*
+Name: Reece Pieri
+ID: M087496
+Date: 23/07/2020
+Activity: 1
+*/
+
+#bootstrap-overrides.navbar {
+	padding-top: 0;
+	padding-bottom: 0;
+	background-color: #222;
+}
+
+#bootstrap-overrides .navbar-brand {
+	margin-right: 15px;
+}
+
+#bootstrap-overrides a.nav-link {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+#bootstrap-overrides a.nav-link:hover {
+	color: white;
+	background-color: #dc3545;
+}
+
+#bootstrap-overrides .dropdown-menu {
+	background-color: #222222;
+}
+
+#bootstrap-overrides .dropdown-item {
+	color: #868e96;
+}
+
+#bootstrap-overrides .dropdown-item.active {
+	color: white;
+	background-color: #222222;
+}
+
+#bootstrap-overrides .dropdown-item:hover {
+	color: white;
+	background-color: #dc3545;
+}
+
+#bootstrap-overrides .btn:hover {
+	background-color: #dc3545;
+	transition: 0.3s;
+}
