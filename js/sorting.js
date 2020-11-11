@@ -57,6 +57,7 @@ function SortMovies(field) {
         default:
             break;
     }
+    UpdateTable();
 }
 
 // Change sort order
