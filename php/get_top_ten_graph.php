@@ -22,11 +22,10 @@ $x1 = 100; // x-axis start
 $y1 = $height-50; // y-axis start
 $x2 = 90; // x-axis end
 $y2 = $height-50; // y-axis end
-$heightFactor = 5; // amount to increment height per array value
+$heightFactor = 1; // amount to increment height per array value
 $width = 70; // number of bars
 
 // draw graph 
-
 foreach ($jsonObject as $movie) {
     imagefilledrectangle($img, $x1, $y1, $x2, $y2-((int)$movie["SearchCount"] * $heightFactor), $red);
     imagerectangle($img, $x1, $y1, $x2, $y2-((int)$movie["SearchCount"] * $heightFactor), $black);
