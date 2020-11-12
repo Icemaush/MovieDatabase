@@ -1,0 +1,30 @@
+/* BOOTSTRAP OVERRIDE */
+/* Table Style */
+
+#bootstrap-override th {
+	text-align: center;
+}
+
+#bootstrap-override td {
+	text-align: center;
+}
+
+#bootstrap-override th > a {
+	color: white;
+    text-decoration: none;
+}
+
+#bootstrap-override th > a:hover {
+	color: #dc3545;
+	text-decoration: none;
+}
+
+table {
+    font-size: 1.5vw;
+}
+
+@media screen and (min-width: 900px) {
+    table {
+        font-size: 16px;
+    }
+}

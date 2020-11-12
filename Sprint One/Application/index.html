@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<!--
+Team: Team Bare Maximum
+Members: Reece Pieri, Rico Imbang, Say Hon Lee
+Date: 05/11/2020
+
+A teams based RAD project to develop/modify/amend/review a Movie Database Application to suit the specific requirements as outlined by the client.
+-->
+
+<html lang="en">
+    <head>
+        <title>Project</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./css/tableheaders.css">
+        <link rel="stylesheet" href="./css/stylesheet1.css">
+        <link rel="stylesheet" href="./css/heading.css">
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Syncopate"/>
+        <script src="./bootstrap/js/jquery.min.js"></script>
+        <script src="./bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="./js/sorting.js"></script>
+    </head>
+
+    <body class="bg-dark">
+        
+        <!-- Heading -->
+        <div class="container-fluid">
+            <!-- Title -->
+            <div class="row justify-content-center">
+                <div id="heading">
+                    <span id="star1">&#9733</span>
+                    <span id="star2">&#9733</span>
+                    <span id="star3">&#9733</span>
+                    <span id="pagetitle">ACME Movie DB</span>
+                    <span id="star3">&#9733</span>
+                    <span id="star2">&#9733</span>
+                    <span id="star1">&#9733</span>
+                </div>
+            </div>
+
+            <!-- Caption -->
+            <div class="row justify-content-center">
+                <span id="caption">The worlds most comprehensive online movie database!</span>
+            </div>
+            <div class="row justify-content-center">
+                <span id="caption">Brought to you by ACME Entertainment Pty Ltd.</span>
+            </div>
+        </div>
+
+        <br>
+        <br>
+
+        <!-- Search form-->
+        <div class="container-fluid">
+            <div class=" col-sm-auto">
+                <div class="row justify-content-center border-top border-bottom border-light">
+                    <form id="searchDB" style="width: 300px;" onsubmit="event.preventDefault(); SearchDatabase()" method="POST">
+
+                        <!-- Search Database button -->
+                        <div class="container">
+                            <div class="form-group row justify-content-center">
+                                <button class="btn btn-outline-light" style="margin-top: 15px; width: 270px;" type="button" data-toggle="collapse" data-target="#searchfilter">Search Database</button>
+                            </div>
+                        </div>
+
+                        <!-- Search filters-->
+                        <div class="container collapse" id="searchfilter">
+                            <!-- Title search -->
+                            <div class="container">
+                                <div class="form-group row justify-content-center">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" id="title" placeholder="Enter title" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <!-- Genre search -->
+                            <div class="container">
+                                <div class="form-group row justify-content-center">
+                                    <label for="genre">Genre</label><br>
+                                    <select class="custom-select form-control" id="genre">
+                                        <option selected></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Rating search -->
+                            <div class="container">
+                                <div class="form-group row justify-content-center">
+                                    <label for="rating">Rating</label><br>
+                                    <select class="custom-select form-control" id="rating">
+                                        <option selected></option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Year search -->
+                            <div class="container">
+                                <div class="form-group row justify-content-center">
+                                    <label for="year">Year</label><br>
+                                    <select class="custom-select form-control" id="year">
+                                        <option selected></option>
+                                    </select>
+                                </div>
+                            </div>
+                        
+                            <!-- Search button -->
+                            <div class="container">
+                                <div class="form-group row justify-content-center">
+                                    <button class="btn btn-outline-light form-control" type="submit" data-toggle="collapse" data-target="#searchfilter">Go</button>
+                                </div>
+                            </div>
+
+                            <!-- Preset searches -->
+                            <div class="container">
+                                <div class="form-group row justify-content-center">
+                                    <button class="btn btn-outline-light form-control" type="button" type="submit" data-toggle="collapse" data-target="#searchfilter" onclick="TopTen()">Top 10 Most Popular</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form> 
+                </div>    
+            </div>
+        </div>
+
+        <br>
+        
+        <!-- Results -->
+        <div class="container">
+
+            <!-- Top ten movies graph -->
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div id="graph" style="display: none;">
+                        <img class="graphoutput" style="width: 100vw; max-width: 800px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table results -->
+            <div class="container-fluid col-auto" id="resultsTable" style="display: none;">
+                <div class="row">
+                    <table class="table table-hover table-dark table-sm" id="bootstrap-override">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col"><a class="table_header" id="SortByTitle" href="" onclick='event.preventDefault(); SortTable("Title")'>Title</a></th>
+                                <th scope="col"><a class="table_header" id="SortByStudio" href="" onclick='event.preventDefault(); SortTable("Studio")'>Studio</a></th>
+                                <th scope="col"><a class="table_header" id="SortByStatus" href="" onclick='event.preventDefault(); SortTable("Status")'>Status</a></th>
+                                <th scope="col"><a class="table_header" id="SortBySound" href="" onclick='event.preventDefault(); SortTable("Sound")'>Sound</a></th>
+                                <th scope="col"><a class="table_header" id="SortByVersions" href="" onclick='event.preventDefault(); SortTable("Versions")'>Versions</a></th>
+                                <th scope="col"><a class="table_header" id="SortByPrice" href="" onclick='event.preventDefault(); SortTable("Price")'>Price</a></th>
+                                <th scope="col"><a class="table_header" id="SortByRating" href="" onclick='event.preventDefault(); SortTable("Rating")'>Rating</a></th>
+                                <th scope="col"><a class="table_header" id="SortByYear" href="" onclick='event.preventDefault(); SortTable("Year")'>Year</a></th>
+                                <th scope="col"><a class="table_header" id="SortByGenre" href="" onclick='event.preventDefault(); SortTable("Genre")'>Genre</a></th>
+                                <th scope="col"><a class="table_header" id="SortByAspect" href="" onclick='event.preventDefault(); SortTable("Aspect")'>Aspect</a></th>
+                                <th scope="col"><a class="table_header" id="SortBySearchCount" href="" onclick='event.preventDefault(); SortTable("SearchCount")'>Searches</a></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Error alert -->
+            <div class="alert alert-danger" id="errorMessage" role="alert" style="display: none;"></div>
+
+            <br>
+            <br>
+            <br>
+
+            <!-- Go to Top button -->
+            <div class="container">
+                <div class="row justify-content-center">
+                    <a class="btn btn-danger fixed-bottom" id="back-to-top" style="display: none;" type="button" href="#">^</button>
+                </div>
+            </div>
+            
+        </div>
+
+		<script>
+			var movies = []
+            var sortOrder = 0;
+            var sortedBy = null;
+
+            $(document).ready( function (){
+                GetOptions();
+                SetScrollToTop();
+			})
+
+            // Set scroll to top button functionality
+            function SetScrollToTop() {
+                $(window).scroll(function () {
+                    if ($(this).scrollTop() > 50) {
+                        $('#back-to-top').fadeIn();
+                    } else {
+                        $('#back-to-top').fadeOut();
+                    }
+                });
+
+                // scroll body to 0px on click
+                $('#back-to-top').click(function () {
+                    $('body,html').animate({
+                        scrollTop: 0
+                    }, 400);
+                    return false;
+                });
+            }
+
+            // Update search options based on existing database records
+            function GetOptions() {
+                UpdateGenreOptions();
+                UpdateRatingOptions();
+                UpdateYearOptions();
+            }
+
+            // Add genre search options
+            function UpdateGenreOptions() {
+                var xhttp;
+                var genreOptions = document.getElementById("genre");
+
+                if (window.XMLHttpRequest) {
+					xhttp = new XMLHttpRequest(); // For most browsers
+				} else {
+					xhttp = new ActiveXObject("Microsoft.XMLHTTP"); // For IE
+				}
+
+                xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+                        var options = [] = JSON.parse(this.responseText);
+
+                        for (row in options) {
+                            var genreOption = document.createElement('option');
+                            genreOption.innerHTML = options[row].Genre;
+                            genreOptions.append(genreOption);
+                        }
+					}
+				};
+				xhttp.open("POST", "./php/get_genre_options.php", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send();
+            }
+
+            // Add rating search options
+            function UpdateRatingOptions(element, options) {
+                var xhttp;
+                var ratingOptions = document.getElementById("rating");
+
+                if (window.XMLHttpRequest) {
+					xhttp = new XMLHttpRequest(); // For most browsers
+				} else {
+					xhttp = new ActiveXObject("Microsoft.XMLHTTP"); // For IE
+				}
+
+                xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+                        var options = [] =JSON.parse(this.responseText);
+
+                        for (row in options) {
+                            var ratingOption = document.createElement('option');
+                            ratingOption.innerHTML = options[row].Rating;
+                            ratingOptions.append(ratingOption);
+                        }
+					}
+				};
+				xhttp.open("POST", "./php/get_rating_options.php", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send();
+            }
+
+            // Add year search options
+            function UpdateYearOptions(element, options) {
+                var xhttp;
+                var yearOptions = document.getElementById("year");
+
+                if (window.XMLHttpRequest) {
+					xhttp = new XMLHttpRequest(); // For most browsers
+				} else {
+					xhttp = new ActiveXObject("Microsoft.XMLHTTP"); // For IE
+				}
+
+                xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+                        var options = [] = JSON.parse(this.responseText);
+
+                        for (row in options) {
+                            var yearOption = document.createElement('option');
+                            yearOption.innerHTML = options[row].Year;
+                            yearOptions.append(yearOption);
+                        }
+					}
+				};
+				xhttp.open("POST", "./php/get_year_options.php", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send();
+            }
+
+            // Search database
+            function SearchDatabase() {
+                document.getElementById("graph").style.display = "none";
+
+                var xhttp;
+                var title = document.getElementById("title").value;
+                var genre = document.getElementById("genre").value;
+                var rating = document.getElementById("rating").value;
+                var year = document.getElementById("year").value;
+
+				if (window.XMLHttpRequest) {
+					xhttp = new XMLHttpRequest(); // For most browsers
+				} else {
+					xhttp = new ActiveXObject("Microsoft.XMLHTTP"); // For IE
+				}
+
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+                        
+                        if (this.responseText.length != 0) {
+                            document.getElementById("errorMessage").style.display = "none";
+                            var results = this.responseText.replace(/\\/g, "")
+                                .replace(/ "/g, " \'").replace(/" /g, "\' ")
+                            movies = JSON.parse(results);
+
+                            // Sort movies
+                            if (sortedBy == null) {
+                                SortMovies("Title");
+                            } else {
+                                SortMovies(sortedBy)
+                            }
+
+                            UpdateTable();
+
+                        } else {
+                            ClearTable();
+                            document.getElementById("errorMessage").innerHTML = "No movies found.";
+                            document.getElementById("errorMessage").style.display = "inline";
+                        }
+					}
+				};
+				xhttp.open("POST", "./php/search_db.php", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send("title=" + title + "&genre=" + genre + "&rating=" + rating + "&year=" + year);
+            }
+
+            // Search database for top 10 most popular movies
+            function TopTen() {
+                var xhttp;
+                var title = document.getElementById("title").value;
+                var genre = document.getElementById("genre").value;
+                var rating = document.getElementById("rating").value;
+                var year = document.getElementById("year").value;
+
+				if (window.XMLHttpRequest) {
+					xhttp = new XMLHttpRequest(); // For most browsers
+				} else {
+					xhttp = new ActiveXObject("Microsoft.XMLHTTP"); // For IE
+				}
+
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+                        
+                        if (this.responseText.length != 0) {
+                            document.getElementById("errorMessage").style.display = "none";
+
+                            var results = this.responseText.replace(/\\/g, "")
+                                .replace(/ "/g, " \'").replace(/" /g, "\' ")
+                            movies = JSON.parse(results);
+
+                            // Sort movies
+                            sortOrder = 1;
+                            SortMovies("SearchCount");
+                            
+                            GetTopTenGraph(movies);
+                            UpdateTable();
+
+                        } else {
+                            ClearTable();
+                            document.getElementById("errorMessage").innerHTML = "No movies found.";
+                            document.getElementById("errorMessage").style.display = "inline";
+                        }
+					}
+				};
+				xhttp.open("POST", "./php/top_10.php", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send("title=" + title + "&genre=" + genre + "&rating=" + rating + "&year=" + year);
+            }
+
+            // Populate table with database query results
+            function UpdateTable() {
+                var tableBody = document.getElementById("tableBody");
+                tableBody.innerHTML = "";
+                var count = 0;
+                
+                // Create new table row element for each user
+                for (movie in movies) {
+                    count++;
+                    var row = document.createElement('tr');
+                    row.innerHTML = '<th scope="row">' + count + '</th>' + 
+                        '<td>' + movies[movie].Title + '</td>' + 
+                        '<td>' + movies[movie].Studio + '</td>' +
+                        '<td>' + movies[movie].Status + '</td>' + 
+                        '<td>' + movies[movie].Sound + '</td>' + 
+                        '<td>' + movies[movie].Versions + '</td>' + 
+                        '<td>' + movies[movie].RecRetPrice + '</td>' +
+                        '<td>' + movies[movie].Rating + '</td>' + 
+                        '<td>' + movies[movie].Year + '</td>' +
+                        '<td>' + movies[movie].Genre + '</td>' + 
+                        '<td>' + movies[movie].Aspect + '</td>' +
+                        '<td>' + movies[movie].SearchCount + '</td>'; 
+                    tableBody.append(row);
+                }
+
+                document.getElementById("resultsTable").style.display = "inline";
+            }
+
+            // Sort table by selected heading
+            function SortTable(heading) {
+                ChangeSortOrder(heading);
+                UpdateTable();
+            }
+
+            // Update search count (NOT IMPLEMENTED)
+            function UpdateSearchResultCount() {
+                var count;
+                for (movie in movies) {
+                    count++
+                }
+
+                document.getElementById("searchResults").innerHTML = "Search results: " + count;
+            }
+
+            // Clear results table
+            function ClearTable() {
+                var tableBody = document.getElementById("tableBody");
+                tableBody.innerHTML = "";
+            }
+
+            // Load top ten movies graph from database
+            function GetTopTenGraph(movies) {
+                var json = JSON.stringify(movies);
+                var xhttp;
+
+				if (window.XMLHttpRequest) {
+					xhttp = new XMLHttpRequest(); // For most browsers
+				} else {
+					xhttp = new ActiveXObject("Microsoft.XMLHTTP"); // For IE
+				}
+
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+                        var results = this.responseText;
+
+                        $('.graphoutput').attr('src', 'data:image/png;base64,' + results);
+                        document.getElementById("graph").style.display = "inline";
+					}
+				};
+				xhttp.open("POST", "./php/get_top_ten_graph.php", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send("jsonObject=" + json);
+            }
+
+		</script>
+	</body>
+</html>
