@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<!--
+Team: Team Bare Maximum
+Members: Reece Pieri, Rico Imbang, Say Hon Lee
+Date: 12/11/2020
+
+A teams based RAD project to develop/modify/amend/review a Movie Database Application to suit the specific requirements as outlined by the client.
+-->
+
+<html lang="en">
+    <head>
+        <title>Project</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./css/tableheaders.css">
+        <link rel="stylesheet" href="./css/stylesheet1.css">
+        <link rel="stylesheet" href="./css/heading.css">
+        <link rel="stylesheet" href="./css/admin.css">
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Syncopate"/>
+        <script src="./bootstrap/js/jquery.min.js"></script>
+        <script src="./bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="./js/sortingAdmin.js"></script>
+        <script type="text/javascript">
+            $(window).on('load',function(){
+                $('#loginModal').modal({backdrop: 'static', keyboard: false});
+            });
+        </script>
+    </head>
+
+    <body class="bg-dark">
+
+        <!-- Login modal -->
+        <div class="container-fluid">
+            <div class="modal hide fade" id="loginModal" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="col-sm-10 offset-sm-1">
+                        <div class="modal-content bg-dark border-danger">
+                            <div class="modal-header justify-content-center">
+                                <h3>Administrator Login</h3>
+                            </div>
+                            <form id="login" onsubmit="event.preventDefault(); Login()" method="POST">
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <div class="form-group row">
+                                            <label for="email">Email:</label>
+                                            <input type="email" class="form-control" id="email" placeholder="Enter email address" required>
+                                        </div>
+                                    </div>
+                                    <div class="container">
+                                        <div class="form-group row">
+                                            <label for="password">Password:</label>
+                                            <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <div>
+                                        <div class="alert alert-danger" id="loginError" role="alert" style="display: none;">Email or password is incorrect.</div>
+                                    </div>
+                                    <button class="btn btn-outline-light" type="submit">Login</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Heading -->
+        <div class="container-fluid">
+
+            <!-- Title -->
+            <div class="row justify-content-center">
+                <div id="heading">
+                    <span id="star1">&#9733</span>
+                    <span id="star2">&#9733</span>
+                    <span id="star3">&#9733</span>
+                    <span id="pagetitle">ACME Movie DB</span>
+                    <span id="star3">&#9733</span>
+                    <span id="star2">&#9733</span>
+                    <span id="star1">&#9733</span>
+                </div>
+            </div>
+
+            <!-- Caption -->
+            <div class="row justify-content-center">
+                <span id="caption">The worlds most comprehensive online movie database!</span>
+            </div>
+            <div class="row justify-content-center">
+                <span id="caption">Brought to you by ACME Entertainment Pty Ltd.</span>
+            </div>
+        </div>
+        <br>
+
+        <!-- Admin Control Panel label -->
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <span id="sitelabel">ADMINISTRATOR CONTROL PANEL</span>
+            </div>
+        </div>
+        <br>
+
+        <!-- Menu -->
+        <div class="container-fluid">
+            <div class=" col-sm-auto">
+                <div class="row justify-content-center border-top border-bottom border-light" id="menu">
+                    <div>
+                        <button class="btn btn-outline-light PendingRemovals menuButtons" id="PendingRemovals" type="button" onclick="GetPendingRemovals()">Pending Removals</button>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-light Subscribers menuButtons" id="Subscribers" type="button" onclick="GetSubscribers()">Subscribers</button>
+                    </div>
+                </div>    
+            </div>
+        </div>
+        <br>
+        
+        <!-- Results -->
+        <div class="container">
+
+            <!-- Search bar -->
+            <div id="searchBar" style="display: none;">
+                <form id="searchByEmail" onsubmit="event.preventDefault(); SearchByEmail()" method="POST">
+                    <div class="form-group row justify-content-center">
+                        <div class="col-auto">
+                            <input type="email" class="form-control" id="searchEmail" placeholder="Search by email address" required>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-outline-light" id="searchSubmit">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Unsubscribed notificiation -->
+            <div id="unsubscribeNotification" style="display: none;">
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <div class="alert alert-success" id="unsubscribeAlert" role="alert"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table results -->
+            <div class="col-auto" id="resultsTable" style="display: none;">
+                <div class="row">
+                    <table class="table table-hover table-dark table-sm" id="bootstrap-override">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col"><a class="table_header" id="SortByFirstName" href="" onclick='event.preventDefault(); SortTable("FirstName")'>First Name</a></th>
+                                <th scope="col"><a class="table_header" id="SortByLastName" href="" onclick='event.preventDefault(); SortTable("LastName")'>Last Name</a></th>
+                                <th scope="col"><a class="table_header" id="SortByEmail" href="" onclick='event.preventDefault(); SortTable("Email")'>Email</a></th>
+                                <th scope="col"><a class="table_header" id="SortByNewsletter" href="" onclick='event.preventDefault(); SortTable("Newsletter")'>Newsletter</a></th>
+                                <th scope="col"><a class="table_header" id="SortByBreakingNews" href="" onclick='event.preventDefault(); SortTable("BreakingNews")'>Breaking News</a></th>
+                                <th scope="col"><a class="table_header" id="SortByPendingRemoval" href="" onclick='event.preventDefault(); SortTable("PendingRemoval")'>Pending Removal</a></th>
+                                <th scope="col"><a class="table_header" href="">Unsubscribe</a></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Error alert -->
+            <br>
+            <div class="row justify-content-center" id="errorMessage" style="display: none;">
+                <div class="alert alert-danger" id="errorAlert" role="alert"></div>
+            </div>
+            <br>
+            <br>
+            <br>
+
+            <!-- Go to Top button -->
+            <div class="container">
+                <div class="row justify-content-center">
+                    <a class="btn btn-danger fixed-bottom" id="back-to-top" style="display: none;" type="button" href="#">^</button>
+                </div>
+            </div>
+            
+        </div>
+
+		<script>
+			var members = []
+            var sortOrder = 0;
+            var sortedBy = null;
+            var menuName;
+
+            // Call methods on page load
+            $(document).ready( function (){
+                AddAdminAccount();
+                SetScrollToTop();
+			})
+
+            // Add administrator account if it doesn't already exist
+            function AddAdminAccount() {
+                var xhttp;
+				xhttp = new XMLHttpRequest(); // For most browsers
+				xhttp.open("POST", "./php/Admin/create_admin_account.php", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send();
+            }
+
+            // Set scroll to top button functionality
+            function SetScrollToTop() {
+                $(window).scroll(function () {
+                    if ($(this).scrollTop() > 50) {
+                        $('#back-to-top').fadeIn();
+                    } else {
+                        $('#back-to-top').fadeOut();
+                    }
+                });
+
+                // scroll body to 0px on click
+                $('#back-to-top').click(function () {
+                    $('body,html').animate({
+                        scrollTop: 0
+                    }, 400);
+                    return false;
+                });
+            }
+
+            // Get members who are pending removal
+            function GetPendingRemovals() {
+                ClearAlerts();
+                document.getElementById("searchBar").style.display = "none";
+                menuName = "PendingRemovals";
+                SetMenuButtonBackground();
+                var xhttp;
+				xhttp = new XMLHttpRequest(); // For most browsers
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+                        if (this.responseText.length != 0) {
+                            var results = this.responseText;
+                            members = JSON.parse(results);
+                            UpdateTable();
+                        } else {
+                            ClearTable();
+                            document.getElementById("resultsTable").style.display = "none";
+                            document.getElementById("errorMessage").innerHTML = "No members found.";
+                            document.getElementById("errorMessage").style.display = "inline";
+                        }
+					}
+				};
+				xhttp.open("POST", "./php/Admin/get_pending_removals.php", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send();
+            }
+
+            // Get all subscribers
+            function GetSubscribers() {
+                ClearAlerts();
+                document.getElementById("searchEmail").value = "";
+                document.getElementById("searchBar").style.display = "inline";
+                menuName = "Subscribers";
+                SetMenuButtonBackground();
+                var xhttp;
+				xhttp = new XMLHttpRequest(); // For most browsers
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+                        if (this.responseText.length != 0) {
+                            var results = this.responseText;
+                            members = JSON.parse(results);
+                            UpdateTable();
+                        } else {
+                            ClearTable();
+                            document.getElementById("resultsTable").style.display = "none";
+                            document.getElementById("errorMessage").innerHTML = "No members found.";
+                            document.getElementById("errorMessage").style.display = "inline";
+                        }
+					}
+				};
+				xhttp.open("POST", "./php/Admin/get_subscribers.php", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send();
+            }
+
+            // Populate table with database query results
+            function UpdateTable() {
+                document.getElementById("resultsTable").style.display = "inline";
+                var tableBody = document.getElementById("tableBody");
+                tableBody.innerHTML = "";
+                var count = 0;
+                
+                // Create new table row element for each user
+                for (member in members) {
+                    count++;
+                    var row = document.createElement('tr');
+                    row.innerHTML = '<th scope="row">' + count + '</th>' + 
+                        '<td>' + members[member].FirstName + '</td>' + 
+                        '<td>' + members[member].LastName + '</td>' +
+                        '<td>' + members[member].Email + '</td>' + 
+                        '<td>' + members[member].Newsletter + '</td>' + 
+                        '<td>' + members[member].BreakingNews + '</td>' + 
+                        '<td>' + members[member].PendingRemoval + '</td>' + 
+                        '<td>' + '<button class="btn btn-danger btn-xs unsubscribe" id="' + members[member].Email + '" type="button">Unsubscribe</button>' + '</td>';
+                    tableBody.append(row);
+                }
+
+                // Unsubscribe button functionality
+                $('.unsubscribe').click(function() {
+                    Unsubscribe(this.id);
+                });
+
+                document.getElementById("resultsTable").style.display = "inline";
+            }
+
+            // Unsubscribe member from communications
+            function Unsubscribe(email) {
+                var xhttp;
+				xhttp = new XMLHttpRequest(); // For most browsers
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+                        console.log(this.responseText);
+                        if (this.responseText.length != 0) {
+                            // Check which menu is selected and update table accordingly
+                            if (menuName == "PendingRemovals") {
+                                GetPendingRemovals();
+                            } else if (menuName == "Subscribers") {
+                                GetSubscribers();
+                            }
+
+                            UnsubscribedNotification(email);
+                        } else {
+                        document.getElementById("errorAlert").innerHTML = "Unable to unsubscribe member.";
+                        document.getElementById("errorMessage").style.display = "inline";
+                        }
+					}
+				};
+				xhttp.open("POST", "./php/Admin/unsubscribe.php", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send("email=" + email);
+            }
+
+            // Sort table by selected heading
+            function SortTable(heading) {
+                ChangeSortOrder(heading);
+                UpdateTable();
+            }
+
+            // Clear alerts
+            function ClearAlerts() {
+                document.getElementById("unsubscribeNotification").style.display = "none";
+                document.getElementById("errorMessage").style.display = "none";
+            }
+
+            // Clear results table
+            function ClearTable() {
+                var tableBody = document.getElementById("tableBody");
+                tableBody.innerHTML = "";
+            }
+
+            // Set active menu button background colour
+            function SetMenuButtonBackground() {
+                var menuButtons = document.getElementsByClassName("menuButtons");
+                var i;
+                for (i = 0; i < menuButtons.length; i++) {
+                    if (menuButtons[i].classList.contains(menuName)) {
+                        menuButtons[i].classList.replace("btn-outline-light", "btn-danger");
+                    } else {
+                        menuButtons[i].classList.replace("btn-danger", "btn-outline-light");
+                    }
+                }
+            }
+
+            // Member unsubscribed notification
+            function UnsubscribedNotification(email) {
+                document.getElementById("unsubscribeAlert").innerHTML = "Member: " + email + ", successfully unsubscribed.";
+                document.getElementById("unsubscribeNotification").style.display = "inline";
+            }
+
+            // Login as admin account and access admin control panel
+            function Login() {
+                var email = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+                var xhttp = new XMLHttpRequest(); // For most browsers
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if (this.responseText.length != 0) {
+                            $('#loginModal').modal('hide');
+                        } else {
+                            document.getElementById("loginError").style.display = "inline";
+                        }
+                    }
+                };
+                xhttp.open("POST", "./php/Admin/admin_login.php", true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send("email=" + email + "&password=" + password);
+            }
+
+            // Search for member by email
+            function SearchByEmail() {
+                ClearAlerts();
+                var email = document.getElementById("searchEmail").value;
+                var xhttp;
+				xhttp = new XMLHttpRequest(); // For most browsers
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+                        if (this.responseText.length != 0) {
+                            var results = this.responseText;
+                            members = JSON.parse(results);
+                            UpdateTable();
+                        } else {
+                            ClearTable();
+                            document.getElementById("resultsTable").style.display = "none";
+                            document.getElementById("errorMessage").innerHTML = "No members found.";
+                            document.getElementById("errorMessage").style.display = "inline";
+                        }
+					}
+				};
+				xhttp.open("POST", "./php/Admin/search_by_email.php", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send("email=" + email);
+            }
+            
+		</script>
+	</body>
+</html>
