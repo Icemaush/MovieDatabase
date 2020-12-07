@@ -1,6 +1,6 @@
 # MovieDatabase
-Rapid Application Development - AT2 Project
-Team Bare Maximum
+Rapid Application Development - AT2 Project<br>
+Team Bare Maximum<br>
 Members: Reece Pieri, Jose Rico Imbang, Say Hon Lee
 
 ACME Movie Database
