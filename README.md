@@ -8,6 +8,7 @@ ACME Movie Database
 2/12/2020. South Metropolitan TAFE, Diploma of Software Development, Rapid Application Development - Project.
 
 The ACME Movie Database is a website that allows users to search and gather information on a vast database of movies.
+The website utilizes the following technologies: HTML, CSS, Javascript, PHP, MySQL.
 
 Features include:
 <ul>
